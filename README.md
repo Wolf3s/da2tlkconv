@@ -49,6 +49,8 @@ da2tlkconv [option]... \<input path> \<output path>
 * Internal tree serializing are are different from the original TLK file. But it works in game.
 
 ## CHANGELOG
+* 2021 v.0.6.1RC1
+    *Update Solution for Visual Studio 2019
 * 2011/03/06 v.0.6.1
     * Fixed locale (OS default).
 * 2011/03/06 v.0.6

@@ -1484,7 +1484,7 @@ int main( int argc, const char* argv[] ) {
     cout << "Dragon Age 2 TLK Converter" << endl;
     cout << "\tAuther: Hikami" << endl;
     cout << "\tModified by Wolf3s";
-    cout << "\tVersion: 0.6.1\tBuild Date: " << __DATE__ << " " << __TIME__ << endl;
+    cout << "\tVersion: 0.6.1RC1\tBuild Date: " << __DATE__ << " " << __TIME__ << endl;
     cout << endl;
 
     if ( argc < 4 ) {
