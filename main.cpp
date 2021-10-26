@@ -40,6 +40,7 @@
 #include "Header_tlk.hpp"
 #include "Big_endian.hpp"
 #include "Tlk2.0.hpp"
+#include "XML.hpp"
 
 // win32
 
@@ -74,20 +75,128 @@ enum Mode
     Mode_None,
 };
 
-// xml
-const wchar_t* xml_linefeed   = L"\r\n";
-const wchar_t* xml_head       = L"<?xml version=\"1.0\" encoding=\"UTF-16\"?>";
-const wchar_t* xml_listbeg    = L"<tlkList>"; // �o�[�W��������H�ς��Ƃ��Ă��ʒu��񂭂炢���� ����Ƃ܂Ƃ��ȃp�[�T�i���ꂪ�ʓ|�j����Ȃ��Ɩʓ|
-const wchar_t* xml_listend    = L"</tlkList>";
-const wchar_t* xml_chunkbeg   = L"<tlkElement>";
-const wchar_t* xml_chunkend   = L"</tlkElement>";
-const wchar_t* xml_idbeg      = L"<tlkID>";
-const wchar_t* xml_idend      = L"</tlkID>";
-const wchar_t* xml_textbeg    = L"<tlkString>";
-const wchar_t* xml_textend    = L"</tlkString>";
-const wchar_t* xml_whitespace = L"    ";
+enum xml16
+{
+  find,
+};
+
+enum entry_list
+{
+    push_back,
+};
+
+
+
+bool g_ignoreEmptyLine;
+bool g_addIDPrefix;
+bool g_usingXML;
+bool g_usingTroika;
+
+bool ParseXML::UTF16(const wchar_t* buff, u32 size)
+{
+    std::list<TLKEntry> entry_list;
+    
+    std::cout << "Parsing txt to xml with UTF8 Format" << endl;
+    std::wstring xml16(buff);
+    size_t pos;
+    size_t eol;
+    {
+        std::wstring::size_type index = xml16::find(xml_head);
+        if (std::wstring::npos == index)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        pos = index + wcslen(xml16_head);
+    }
+    {
+        std::wstring::size_type start = xml16::find(xml16_listbeg, pos);
+        if (std::wstring::npos == start) 
+        {
+            return false;        
+        }
+        pos = start + wcslen(xml_listbeg);
+        std::string::size_type end = xml16::find(xml16_listbeg, pos);
+         if (std::wstring::npos == end) 
+        {
+            return false;
+        }
+        eol = end;
+    }
+    
+    size_t chunkendlen = wcslen(xml_chunkend);
+    size_t idbeglen = wcslen(xml_idbeg);
+    size_t textbeglen = wcslen(xml_textbeg);
+    while (pos < eol) {
+        std::wstring::size_type start = xml16::find(xml_chunkbeg, pos);
+        if (std::wstring::npos == start) {
+            break;
+            //return false;
+        }
+        pos = start + wcslen(xml_listbeg);
+        std::wstring::size_type end = xml16::find(xml_chunkend, pos);
+        if (std::wstring::npos == end || end < pos) {
+            return false;
+        }
+        // find id
+        TLKEntry temp;
+        bool findID = false;
+        {
+            std::wstring::size_type s = xml16::find(xml_idbeg, pos);
+            if (std::wstring::npos == s || end < s) {
+                //return false;
+            }
+            else {
+                size_t beg = s + idbeglen;
+                std::wstring::size_type e = xml16::find(xml_idend, beg);
+                if (std::wstring::npos == e || e < beg) {
+                    return false;
+                }
+
+                temp.id = xml16.substr(beg, e - beg);
+                findID = true;
+            }
+        }
+        // find string
+        bool findText = false;
+        {
+            std::wstring::size_type s = xml16::find(xml_textbeg, pos);
+            if (std::wstring::npos == s || end < s) {
+                //return false;
+            }
+            else {
+                size_t beg = s + textbeglen;
+                std::wstring::size_type e = xml16::find(xml_textend, beg);
+                if (std::wstring::npos == e || e < beg) {
+                    return false;
+                }
+                temp.str = xml16.substr(beg, e - beg);;
+                findText = true;
+            }
+        }
+        if (findID) {
+            entry_list::push_back(temp);
+
+        }
+
+        pos = end + chunkendlen;
+    }
+    return true;
+
+};
+
+bool ParseXML::UTF8(const wchar_t* buff, u32 size)
+{
+    std::cout << "Parsing txt to xml with UTF8 Format" << endl;
+    return true;
+};
+
 
 bool parseXML( std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size ) {
+
     std::wstring xml(buff); // �������ǂ��H�������������r���߂�ǂ�
     size_t pos = 0;
     size_t eol = 0;
@@ -635,7 +744,8 @@ int convertTLKintoTXT( const char* input_path, const char* output_path )
     output = static_cast<wchar_t>(0xFEFF); // BOM
     u32 ignoreCount = 0;
 
-    if ( g_usingXML ) {
+    if ( g_usingXML ) 
+    {
         // xml format
 
         output += xml_head;
@@ -1208,6 +1318,7 @@ int GFFv4_0::Extractlk2_0(const char* input_path, const char* output_path)
 
     return 0;
 }
+
 int convertTXTintoTLK( const char* input_path, const char* output_path ) {
   std::cout << "---- Converting TXT into TLK v5.0 --------------------------------" << endl;
 

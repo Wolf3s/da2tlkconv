@@ -83,6 +83,7 @@
     <ClInclude Include="Header_tlk.hpp" />
     <ClInclude Include="Tlk2.0.hpp" />
     <ClInclude Include="uint.hpp" />
+    <ClInclude Include="XML.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE" />
