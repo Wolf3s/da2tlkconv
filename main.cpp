@@ -87,10 +87,8 @@ bool g_ignoreEmptyLine;
 bool g_addIDPrefix;
 bool g_usingTroika;
 
-bool ParseXML::UTF16(const wchar_t* buff, u32 size)
-{
-    std::list<TLKEntry> entry_list;
-    
+bool parseXML16(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
+{   
     std::wstring xml16(buff);
     size_t pos;
     size_t eol;
@@ -182,10 +180,9 @@ bool ParseXML::UTF16(const wchar_t* buff, u32 size)
 
 };
 
-bool ParseXML::UTF8(const wchar_t* buff, u32 size)
+bool parseXML8(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
 {
-    std::list<TLKEntry> entry_list;
-
+  
     std::wstring xml8(buff);
     size_t pos;
     size_t eol;
@@ -270,8 +267,6 @@ bool ParseXML::UTF8(const wchar_t* buff, u32 size)
             entry_list.push_back(temp);
 
         }
-
-        pos = end + chunkendlen;
     }
     return true;
 };
@@ -783,10 +778,9 @@ int convertTLKintoTXT( const char* input_path, const char* output_path )
             output += xml16_linefeed;
 
         };
-        output += xml16_listend;
-        output += xml16_linefeed;
     }
-    if (g_usingXML8) 
+    
+    else if (g_usingXML8) 
     {
         output += xml8_head;
         output += xml8_linefeed;
@@ -825,13 +819,11 @@ int convertTLKintoTXT( const char* input_path, const char* output_path )
             output += xml8_chunkend;
             output += xml8_linefeed;
 
-        };
-        output += xml8_listend;
-        output += xml8_linefeed;
-    
+        };   
     
     }
-     else if ( g_usingTroika ) {
+     
+    else if ( g_usingTroika ) {
         // troika format
         for ( u32 i = 0; i < entry_array.size(); ++i ) {
             TLKEntry& entry = entry_array[ i ];
@@ -853,7 +845,8 @@ int convertTLKintoTXT( const char* input_path, const char* output_path )
             output += L"\r\n";
         }
 
-    } else {
+    } else 
+{
         // dao format
         for ( u32 i = 0; i < entry_array.size(); ++i ) {
             TLKEntry& entry = entry_array[ i ];
@@ -1383,9 +1376,18 @@ int convertTXTintoTLK( const char* input_path, const char* output_path ) {
     std::list<TLKEntry> entry_list; // list better than vector
 
     bool ret = false;
-    if ( g_usingTroika ) {
+    if (g_usingXML16) 
+    { 
+        ret = parseXML16( entry_list, bin, linesize );
+    }
+ 
+    else if ( g_usingTroika ) 
+    {
         ret = parseTroika( entry_list, bin, linesize );
-    } else {
+    } 
+     
+    else 
+    {
         ret = parseText( entry_list, bin, linesize);
     }
 
@@ -1818,7 +1820,8 @@ void printUsage() {
   std::cout << "\t\t-d\tConvert TLK into Text(UTF-16LE)." << endl;
   std::cout << "\t\t-c\tConvert Text(UTF-16LE) into TLK." << endl;
   std::cout << "\tFormat change:" << endl;
-  std::cout << "\t\t-x\tusing XML format." << endl;
+  std::cout << "\t\t-x\tusing XML UTF16 format." << endl;
+  std::cout << "\t\t-y\tusing XML UTF8 format" << endl;
   std::cout << "\t\t-t\tusing Nesting text format." << endl;
   std::cout << "\tOutput control:" << endl;
   std::cout << "\t\t-i\tIgnore IDs that have an empty string (combine -d)." << endl;
@@ -1889,9 +1892,12 @@ int main( int argc, const char* argv[] ) {
                     }
                     break;
                 case 'c': // compress
-                    if ( mode != Mode_Compress ) {
+                    if ( mode != Mode_Compress ) 
+                    {
                         mode = Mode_Compress;
-                    } else {
+                    } 
+                     else 
+                    {
                         // �r��
                         // mukou na switch
                       std::cerr << "ERROR: Exclusive option. Choose from -d or -c." << endl;
@@ -1911,6 +1917,7 @@ int main( int argc, const char* argv[] ) {
                     break;
                 case 'y':
                     g_usingXML8 = true;
+                    break;
                 case 't':
                     g_usingTroika = true;
                     break;

@@ -17,15 +17,9 @@
 
 #include <iostream>
 
-class ParseXML
-{
-	bool UTF16(const wchar_t* buff, u32 size);
-	bool UTF8(const wchar_t* buff, u32 size);
 
-};
-
-bool g_usingXML8 = false;
-bool g_usingXML16 = false;
+bool g_usingXML8;
+bool g_usingXML16;
 
 //XML UTF16
 const wchar_t* xml16_linefeed = L"\r\n";
