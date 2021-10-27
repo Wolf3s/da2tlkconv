@@ -15,12 +15,6 @@
 ** https://discord.gg/yVWTAmGVuE
 */
 
-#define _CRTDBG_MAP_ALLOC
-#ifdef _DEBUG
-#define NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-#else
-#define NEW new
-#endif
 #include <iostream>
 
 class ParseXML
@@ -28,52 +22,10 @@ class ParseXML
 	bool UTF16(const wchar_t* buff, u32 size);
 	bool UTF8(const wchar_t* buff, u32 size);
 
-	struct UTF16
-	{
-		const wchar_t* xml16_linefeed = L"\r\n";
-		const wchar_t* xml16_head = L"<?xml version=\"1.0\" encoding=\"UTF-16\"?>";
-		const wchar_t* xml16_listbeg = L"<tlkList>"; // �o�[�W��������H�ς��Ƃ��Ă��ʒu��񂭂炢���� ����Ƃ܂Ƃ��ȃp�[�T�i���ꂪ�ʓ|�j����Ȃ��Ɩʓ|
-		const wchar_t* xml16_listend = L"</tlkList>";
-		const wchar_t* xml16_chunkbeg = L"<tlkElement>";
-		const wchar_t* xml16_chunkend = L"</tlkElement>";
-		const wchar_t* xml16_idbeg = L"<tlkID>";
-		const wchar_t* xml16_idend = L"</tlkID>";
-		const wchar_t* xml16_textbeg = L"<tlkString>";
-		const wchar_t* xml16_textend = L"</tlkString>";
-		const wchar_t* xml16_whitespace = L"    ";
-	};
-
-	struct UTF8
-	{
-		const wchar_t* xml8_linefeed = L"\r\n";
-		const wchar_t* xml8_head = L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
-		const wchar_t* xml8_listbeg = L"<tlkList>"; // �o�[�W��������H�ς��Ƃ��Ă��ʒu��񂭂炢���� ����Ƃ܂Ƃ��ȃp�[�T�i���ꂪ�ʓ|�j����Ȃ��Ɩʓ|
-		const wchar_t* xml8_listend = L"</tlkList>";
-		const wchar_t* xml8_chunkbeg = L"<tlkElement>";
-		const wchar_t* xml8_chunkend = L"</tlkElement>";
-		const wchar_t* xml8_idbeg = L"<tlkID>";
-		const wchar_t* xml8_idend = L"</tlkID>";
-		const wchar_t* xml8_textbeg = L"<tlkString>";
-		const wchar_t* xml8_textend = L"</tlkString>";
-		const wchar_t* xml8_whitespace = L"    ";
-	};
 };
 
 bool g_usingXML8 = false;
 bool g_usingXML16 = false;
-
-//LEGAÇY
-const wchar_t* xml_linefeed = L"\r\n";
-const wchar_t* xml_head = L"<?xml version=\"1.0\" encoding=\"UTF-16\"?>";
-const wchar_t* xml_listbeg = L"<tlkList>"; // �o�[�W��������H�ς��Ƃ��Ă��ʒu��񂭂炢���� ����Ƃ܂Ƃ��ȃp�[�T�i���ꂪ�ʓ|�j����Ȃ��Ɩʓ|
-const wchar_t* xml_listend = L"</tlkList>";
-const wchar_t* xml_chunkbeg = L"<tlkElement>";
-const wchar_t* xml_chunkend = L"</tlkElement>";
-const wchar_t* xml_idbeg = L"<tlkID>";
-const wchar_t* xml_idend = L"</tlkID>";
-const wchar_t* xml_textbeg = L"<tlkString>";
-const wchar_t* xml_textend = L"</tlkString>";
-const wchar_t* xml_whitespace = L"    ";
 
 //XML UTF16
 const wchar_t* xml16_linefeed = L"\r\n";
