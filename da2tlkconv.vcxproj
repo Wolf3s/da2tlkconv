@@ -78,11 +78,20 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Big_endian.hpp" />
-    <ClInclude Include="hash_map.hpp" />
-    <ClInclude Include="Header_tlk.hpp" />
-    <ClInclude Include="Tlk2.0.hpp" />
-    <ClInclude Include="uint.hpp" />
+    <ClInclude Include="libutf8\base.hpp" />
+    <ClInclude Include="libutf8\caseinsensitivestring.hpp" />
+    <ClInclude Include="libutf8\exception.hpp" />
+    <ClInclude Include="libutf8\iterator.hpp" />
+    <ClInclude Include="libutf8\json_tokens.hpp" />
+    <ClInclude Include="libutf8\libutf8.hpp" />
+    <ClInclude Include="libutf8\unicode_data.hpp" />
+    <ClInclude Include="libutf8\unicode_data_file.hpp" />
+    <ClInclude Include="TLK\Big_endian.hpp" />
+    <ClInclude Include="TLK\Header_tlk.hpp" />
+    <ClInclude Include="TLK\Tlk2.0.hpp" />
+    <ClInclude Include="TLK\uint.hpp" />
+    <ClInclude Include="Windows\hash_map.hpp" />
+    <ClInclude Include="Windows\uint.hpp" />
     <ClInclude Include="XML.hpp" />
   </ItemGroup>
   <ItemGroup>

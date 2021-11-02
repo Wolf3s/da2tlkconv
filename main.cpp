@@ -37,11 +37,14 @@
 #include <algorithm>
 #include <functional>
 
-#include "hash_map.hpp"
-#include "Header_tlk.hpp"
-#include "Big_endian.hpp"
-#include "Tlk2.0.hpp"
+#include "Windows/hash_map.hpp"
+#include "TLK/Header_tlk.hpp"
+#include "TLK/Big_endian.hpp"
+#include "TLK/Tlk2.0.hpp"
 #include "XML.hpp"
+#include "libutf8/libutf8.hpp"
+
+
 
 // win32
 
@@ -135,7 +138,7 @@ bool parseXML16(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
         }
         // find id
         TLKEntry temp;
-        bool findID = false;
+        bool findID;
         {
             std::wstring::size_type s = xml16.find(xml16_idbeg, pos);
             if (std::wstring::npos == s || end < s) {
@@ -153,7 +156,7 @@ bool parseXML16(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
             }
         }
         // find string
-        bool findText = false;
+        bool findText;
         {
             std::wstring::size_type s = xml16.find(xml16_textbeg, pos);
             if (std::wstring::npos == s || end < s) {
@@ -222,14 +225,14 @@ bool parseXML8(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
             break;
             //return false;
         }
-        pos = start + wcslen(xml16_listbeg);
+        pos = start + wcslen(xml8_listbeg);
         std::wstring::size_type end = xml8.find(xml8_chunkend, pos);
         if (std::wstring::npos == end || end < pos) {
             return false;
         }
         // find id
         TLKEntry temp;
-        bool findID = false;
+        bool findID;
         {
             std::wstring::size_type s = xml8.find(xml8_idbeg, pos);
             if (std::wstring::npos == s || end < s) {
@@ -247,7 +250,7 @@ bool parseXML8(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
             }
         }
         // find string
-        bool findText = false;
+        bool findText;
         {
             std::wstring::size_type s = xml8.find(xml8_textbeg, pos);
             if (std::wstring::npos == s || end < s) {
@@ -263,9 +266,10 @@ bool parseXML8(std::list<TLKEntry>& entry_list, const wchar_t* buff, u32 size)
                 findText = true;
             }
         }
-        if (findID) {
+        if (findID) 
+        {
             entry_list.push_back(temp);
-
+            return true;
         }
     }
     return true;
@@ -1253,7 +1257,7 @@ int GFFv4_0::Extractlk2_0(const char* input_path, const char* output_path)
     u32 ignoreCount = 0;
 
     if (g_usingXML16) {
-        // xml format
+        // xml16 format
 
         output += xml16_head;
         output += xml16_linefeed;
@@ -1295,7 +1299,54 @@ int GFFv4_0::Extractlk2_0(const char* input_path, const char* output_path)
         output += xml16_linefeed;
 
     }
-    else if (g_usingTroika) {
+
+    if (g_usingXML8) 
+{       
+        // xml16 format
+    output += xml8_head;
+    output += xml8_linefeed;
+    output += xml8_listbeg;
+    output += xml8_linefeed;
+
+
+    for (u32 i = 0; i < entry_array.size(); ++i) 
+    {
+        TLKEntry& entry = entry_array[i];
+
+        if (g_ignoreEmptyLine && entry.str.size() == 0) 
+        {
+            ++ignoreCount;
+            continue;
+        }
+
+        // number
+        output += xml8_whitespace;
+        output += xml8_chunkbeg;
+        output += xml8_linefeed;
+        output += xml8_whitespace;
+        output += xml8_whitespace;
+        output += xml8_idbeg;
+        output += entry.id;
+        output += xml8_idend;
+        output += xml8_linefeed;
+
+        output += xml8_whitespace;
+        output += xml8_whitespace;
+        output += xml8_textbeg;
+        output += entry.str;
+        output += xml8_textend;
+        output += xml8_linefeed;
+        output += xml8_whitespace;
+        output += xml8_chunkend;
+        output += xml8_linefeed;
+    }
+
+    output += xml8_listend;
+    output += xml8_linefeed;
+}
+       
+    else if (g_usingTroika) 
+    {
         // troika format
         for (u32 i = 0; i < entry_array.size(); ++i) {
             TLKEntry& entry = entry_array[i];
@@ -1316,7 +1367,6 @@ int GFFv4_0::Extractlk2_0(const char* input_path, const char* output_path)
             output += L"\r\n";
             output += L"\r\n";
         }
-
     }
     else {
         // dao format
@@ -1380,7 +1430,12 @@ int convertTXTintoTLK( const char* input_path, const char* output_path ) {
     { 
         ret = parseXML16( entry_list, bin, linesize );
     }
- 
+    
+    if (g_usingXML8) 
+    {
+        ret = parseXML8( entry_list, bin, linesize );
+    }
+
     else if ( g_usingTroika ) 
     {
         ret = parseTroika( entry_list, bin, linesize );

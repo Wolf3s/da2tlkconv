@@ -1,0 +1,50 @@
+// Copyright (c) 2000-2021  Made to Order Software Corp.  All Rights Reserved
+//
+// https://snapwebsites.org/project/libutf8
+// contact@m2osw.com
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA.
+#pragma once
+
+/** \file
+ * \brief The declarations of the UTF-8 library.
+ *
+ * This file is the declarations of the UTF-8 library which are just a few
+ * functions used to convert a string from one format to another.
+ */
+
+// libexcept lib
+//
+#include "exception.hpp"
+
+namespace libutf8
+{
+
+
+ #define DECLARE_LOGIC_ERROR(libutf8_logic_exception);
+
+ #define DECLARE_MAIN_EXCEPTION(libutf8_exception);
+
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_decoding);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_encoding);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_invalid_parameter);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_io);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_missing);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_overflow);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_twice);
+ #define DECLARE_EXCEPTION(libutf8_exception, libutf8_exception_unsupported);
+
+} // libutf8 namespace
+// vim: ts=4 sw=4 et
