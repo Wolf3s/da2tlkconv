@@ -8,31 +8,7 @@
     <ClInclude Include="libutf8\libutf8.hpp">
       <Filter>libutf8</Filter>
     </ClInclude>
-    <ClInclude Include="libutf8\json_tokens.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
-    <ClInclude Include="libutf8\base.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
-    <ClInclude Include="libutf8\caseinsensitivestring.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
-    <ClInclude Include="libutf8\exception.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
-    <ClInclude Include="libutf8\iterator.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
-    <ClInclude Include="libutf8\unicode_data.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
-    <ClInclude Include="libutf8\unicode_data_file.hpp">
-      <Filter>libutf8</Filter>
-    </ClInclude>
     <ClInclude Include="TLK\Tlk2.0.hpp">
-      <Filter>TLK</Filter>
-    </ClInclude>
-    <ClInclude Include="TLK\uint.hpp">
       <Filter>TLK</Filter>
     </ClInclude>
     <ClInclude Include="TLK\Big_endian.hpp">
@@ -41,11 +17,8 @@
     <ClInclude Include="TLK\Header_tlk.hpp">
       <Filter>TLK</Filter>
     </ClInclude>
-    <ClInclude Include="Windows\hash_map.hpp">
-      <Filter>Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="Windows\uint.hpp">
-      <Filter>Windows</Filter>
+    <ClInclude Include="TLK\types.hpp">
+      <Filter>TLK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -58,9 +31,6 @@
     </Filter>
     <Filter Include="TLK">
       <UniqueIdentifier>{d01aa859-0a7b-470b-9ea3-060db5dadcb6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Windows">
-      <UniqueIdentifier>{ed41166d-7a31-4cd1-be1b-5fadb6dc8552}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

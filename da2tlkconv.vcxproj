@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{04DEEB85-EB91-47F1-A9DF-F6C8D94D54CC}</ProjectGuid>
     <RootNamespace>da2tlkconv</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -55,6 +56,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -66,6 +68,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <OptimizeReferences>true</OptimizeReferences>
@@ -78,20 +81,11 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libutf8\base.hpp" />
-    <ClInclude Include="libutf8\caseinsensitivestring.hpp" />
-    <ClInclude Include="libutf8\exception.hpp" />
-    <ClInclude Include="libutf8\iterator.hpp" />
-    <ClInclude Include="libutf8\json_tokens.hpp" />
     <ClInclude Include="libutf8\libutf8.hpp" />
-    <ClInclude Include="libutf8\unicode_data.hpp" />
-    <ClInclude Include="libutf8\unicode_data_file.hpp" />
     <ClInclude Include="TLK\Big_endian.hpp" />
     <ClInclude Include="TLK\Header_tlk.hpp" />
     <ClInclude Include="TLK\Tlk2.0.hpp" />
-    <ClInclude Include="TLK\uint.hpp" />
-    <ClInclude Include="Windows\hash_map.hpp" />
-    <ClInclude Include="Windows\uint.hpp" />
+    <ClInclude Include="TLK\types.hpp" />
     <ClInclude Include="XML.hpp" />
   </ItemGroup>
   <ItemGroup>

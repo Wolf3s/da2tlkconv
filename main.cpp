@@ -1,21 +1,18 @@
-/*
-** Copyright 2011 hikami, aka longod
-** Copyright 2021 André Guilherme, aka Wolf3s
-** Licensed on MIT License
-** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-** SOFTWARE.
-** https://social.bioware.com/
-** http://www.datoolset.net/wiki/Main_Page
-** https://hnnewgamesofficial.blogspot.com/ 
-** https://discord.gg/yVWTAmGVuE 
-** https://www.youtube.com/channel/UCzMnDI1qhD6egKLMTezysxg
-*/ 
-
+/*********************************************************************************************
+** Copyright 2011 hikami, aka longod                                                        **
+** Copyright 2021-2022 André Guilherme, aka Wolf3s                                          **
+**																						    **
+** THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR			    **
+** IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,                 **
+** FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE              **
+** AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER                   **
+** LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,            **
+** OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  **
+** https://social.bioware.com/                                                              **
+** http://www.datoolset.net/wiki/Main_Page                                                  **
+** https://hnnewgamesofficial.blogspot.com/                                                 **
+** https://discord.gg/yVWTAmGVuE                                                            **
+**********************************************************************************************/
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
@@ -36,26 +33,25 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-
 #include "Windows/hash_map.hpp"
 #include "TLK/Header_tlk.hpp"
 #include "TLK/Big_endian.hpp"
 #include "TLK/Tlk2.0.hpp"
 #include "XML.hpp"
 #include "libutf8/libutf8.hpp"
-
-
-
+#include "TLK/types.hpp"
 // win32
 
 template<typename T>
-bool lesser_ptr (T * lhs, T * rhs) {
+bool lesser_ptr (T * lhs, T * rhs) 
+{
     return ((*lhs) < (*rhs));
 }
 
-bool lesser_ptr (HuffmanNode * lhs, HuffmanNode * rhs) {
+bool lesser_ptr (HuffmanNode * lhs, HuffmanNode * rhs) 
+{
     return ((*lhs) < (*rhs));
- } 
+} 
 
 void traverseHuffmanTree( HuffmanNode* node, std::vector<u8>& code, stdext::hash_map<wchar_t, std::vector<u8> >& huffmanCodes ) {
     if ( node->left == node->right ) {
@@ -72,7 +68,7 @@ void traverseHuffmanTree( HuffmanNode* node, std::vector<u8>& code, stdext::hash
     }
 }
  
-enum Mode 
+enum class Mode 
 {
     Mode_Compress,
     Mode_Decompress,
@@ -83,8 +79,6 @@ enum entry_list
 {
     push_back,
 };
-
-
 
 bool g_ignoreEmptyLine;
 bool g_addIDPrefix;
@@ -1517,7 +1511,7 @@ int convertTXTintoTLK( const char* input_path, const char* output_path ) {
     }
 #endif
 
-  std::cout << "\t\tcount: " <<  entry_list.size() << endl;
+    std::cout << "\t\tcount: " <<  entry_list.size() << endl;
 
     // 0.4���Ƌ�̏ꍇ��ffffff,ffffff�l�߂ďI��点�Ă������d�l���c���ł��Ă��Ȃ��̂ł�߂�
     if ( entry_list.size() == 0 ) {
@@ -1600,7 +1594,7 @@ int convertTXTintoTLK( const char* input_path, const char* output_path ) {
     }
     while ( tree.size() > 1 ) {
 #if 01
-        std::stable_sort( tree.begin(), tree.end(), std::ptr_fun(&lesser_ptr) ); // �A�h���X�Ń\�[�g����Ȃ��悤��
+        std::stable_sort(tree.begin(), tree.end(), std::ptr_fun(&lesser_ptr));// �A�h���X�Ń\�[�g����Ȃ��悤��
         std::list<HuffmanNode*>::iterator first = tree.begin();
         std::list<HuffmanNode*>::iterator second = tree.begin();
 #else
@@ -1920,7 +1914,9 @@ int main( int argc, const char* argv[] ) {
         return -1;
     }
 
-    Mode mode = { Mode::Mode_None };
+    Mode mode;  
+    Mode::Mode_None;
+    
     const char* input_path = NULL;
     const char* output_path = NULL;
 
@@ -1935,8 +1931,8 @@ int main( int argc, const char* argv[] ) {
                 switch ( arg[s] )
                 {
                 case 'd': // decompress
-                    if ( mode != Mode_Decompress ) {
-                        mode = Mode_Decompress;
+                    if ( mode != Mode::Mode_Decompress ) {
+                        mode = Mode::Mode_Decompress;
                     } else {
                         // �r��
                         // mukou na switch
@@ -1947,9 +1943,9 @@ int main( int argc, const char* argv[] ) {
                     }
                     break;
                 case 'c': // compress
-                    if ( mode != Mode_Compress ) 
+                    if ( mode != Mode::Mode_Compress ) 
                     {
-                        mode = Mode_Compress;
+                        mode = Mode::Mode_Compress;
                     } 
                      else 
                     {
@@ -1993,7 +1989,7 @@ int main( int argc, const char* argv[] ) {
     }
 
     // arg check
-    if ( mode == Mode_None ) {
+    if ( mode == Mode::Mode_None ) {
         // �w�肪�Ȃ�
       std::cerr << "ERROR: Required option nothing. Choose from -d or -c." << endl;
       std::cerr << endl;
@@ -2016,11 +2012,11 @@ int main( int argc, const char* argv[] ) {
 
     int ret = -1;
     switch ( mode ) {
-        case Mode_Compress:
+    case Mode::Mode_Compress:
             ret = convertTXTintoTLK( input_path, output_path );
           std::cout << endl;
             break;
-        case Mode_Decompress:
+    case Mode::Mode_Decompress:
             ret = convertTLKintoTXT( input_path, output_path );
           std::cout << endl;
         default:
